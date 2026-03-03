@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0A0A0F;
+  --surface: #12121A;
+  --surface-hover: #1A1A2E;
+  --border: #2A2A3E;
+  --text: #E8E8F0;
+  --text-secondary: #8888A0;
+  --accent: #00D4FF;
+  --accent-soft: rgba(0, 212, 255, 0.1);
+  --success: #00E676;
+  --warning: #FFD600;
+  --danger: #FF5252;
+  --emerging: #00D4FF;
+  --accelerating: #00E676;
+  --peaking: #FFD600;
+  --saturating: #FF9100;
+  --declining: #FF5252;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Stage color utilities */
+.stage-emerging {
+  color: var(--emerging);
+}
+
+.stage-accelerating {
+  color: var(--accelerating);
+}
+
+.stage-peaking {
+  color: var(--peaking);
+}
+
+.stage-saturating {
+  color: var(--saturating);
+}
+
+.stage-declining {
+  color: var(--declining);
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15), 0 0 40px rgba(0, 212, 255, 0.05);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.15), 0 0 40px rgba(0, 230, 118, 0.05);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 20px rgba(255, 214, 0, 0.15), 0 0 40px rgba(255, 214, 0, 0.05);
+}
+
+/* Card base */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Gradient border card */
+.card-gradient-border {
+  position: relative;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1px;
+}
+
+.card-gradient-border-inner {
+  background: var(--surface);
+  border-radius: 11px;
+  padding: 1.5rem;
 }
