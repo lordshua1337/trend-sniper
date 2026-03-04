@@ -8,8 +8,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Trend Sniper',
-  description: 'Monitor emerging tech trends before they peak',
+  title: 'Trend Sniper -- Find What to Build Next',
+  description: 'Analyze 45+ market trends, get build playbooks with product ideas, target customers, and revenue models. Stop guessing -- start building.',
 }
 
 export default function RootLayout({

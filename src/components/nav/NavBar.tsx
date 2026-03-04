@@ -7,10 +7,11 @@ import { Crosshair, Bell, Menu, X, User } from 'lucide-react'
 import { getAlerts } from '@/lib/mock-data'
 
 const navLinks = [
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/dashboard', label: 'Opportunities' },
+  { href: '/dashboard/pipeline', label: 'Pipeline' },
+  { href: '/dashboard/goldmine', label: 'Goldmine' },
   { href: '/dashboard/timeline', label: 'Timeline' },
   { href: '/dashboard/comparison', label: 'Compare' },
-  { href: '/dashboard/goldmine', label: 'Goldmine' },
   { href: '/watchlists', label: 'Watchlists' },
 ]
 
