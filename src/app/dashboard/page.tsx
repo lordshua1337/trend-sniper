@@ -13,28 +13,30 @@ import { StageBadge } from '@/components/common/StageBadge'
 import { getCategoryStats, getTrends, getAnalysisForTrend } from '@/lib/mock-data'
 import { calculateBuildNextScore, getPlaybook, getVerdictColor } from '@/lib/build-playbooks'
 import {
-  loadPipeline, addToPipeline, getPipelineEntry,
+  loadPipeline, addToPipeline,
   STAGE_LABELS, STAGE_COLORS,
 } from '@/lib/opportunity-pipeline'
 import type { Trend, TrendCategory } from '@/lib/types'
 import type { PipelineStage, Pipeline } from '@/lib/opportunity-pipeline'
 
-function OpportunityCard({ trend, rank }: { readonly trend: Trend; readonly rank: number }) {
+interface OpportunityCardProps {
+  readonly trend: Trend
+  readonly rank: number
+  readonly pipeline: Pipeline
+  readonly onPipelineChange: (updated: Pipeline) => void
+}
+
+function OpportunityCard({ trend, rank, pipeline, onPipelineChange }: OpportunityCardProps) {
   const [expanded, setExpanded] = useState(false)
-  const [pipeline, setPipeline] = useState<Pipeline>({ entries: [] })
   const buildScore = calculateBuildNextScore(trend)
   const playbook = getPlaybook(trend.id)
   const analysis = getAnalysisForTrend(trend.id)
   const pipelineEntry = pipeline.entries.find((e) => e.trendId === trend.id)
 
-  useEffect(() => {
-    setPipeline(loadPipeline())
-  }, [])
-
   const handleAddToPipeline = useCallback((stage: PipelineStage) => {
     const updated = addToPipeline(trend.id, stage)
-    setPipeline(updated)
-  }, [trend.id])
+    onPipelineChange(updated)
+  }, [trend.id, onPipelineChange])
 
   const verdictColor = playbook ? getVerdictColor(playbook.verdict) : 'var(--text-secondary)'
   const topIdea = playbook?.productIdeas[0]
@@ -331,16 +333,18 @@ function OpportunityCard({ trend, rank }: { readonly trend: Trend; readonly rank
 export default function DashboardPage() {
   const [selectedCategory, setSelectedCategory] = useState<TrendCategory | undefined>()
   const [showAllTrends, setShowAllTrends] = useState(false)
-  const [pipelineCounts, setPipelineCounts] = useState({ watching: 0, researching: 0, building: 0, launched: 0 })
+  const [pipeline, setPipeline] = useState<Pipeline>({ entries: [] })
 
   useEffect(() => {
-    const pipeline = loadPipeline()
-    const counts = { watching: 0, researching: 0, building: 0, launched: 0 }
-    for (const entry of pipeline.entries) {
-      counts[entry.stage]++
-    }
-    setPipelineCounts(counts)
+    setPipeline(loadPipeline())
   }, [])
+
+  const pipelineCounts = {
+    watching: pipeline.entries.filter((e) => e.stage === 'watching').length,
+    researching: pipeline.entries.filter((e) => e.stage === 'researching').length,
+    building: pipeline.entries.filter((e) => e.stage === 'building').length,
+    launched: pipeline.entries.filter((e) => e.stage === 'launched').length,
+  }
 
   const categoryStats = getCategoryStats()
 
@@ -422,7 +426,7 @@ export default function DashboardPage() {
 
         <div className="flex flex-col gap-4">
           {topOpportunities.map((trend, index) => (
-            <OpportunityCard key={trend.id} trend={trend} rank={index} />
+            <OpportunityCard key={trend.id} trend={trend} rank={index} pipeline={pipeline} onPipelineChange={setPipeline} />
           ))}
         </div>
       </section>
